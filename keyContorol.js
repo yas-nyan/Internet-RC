@@ -4,7 +4,6 @@
  */
 
 var fs = require('fs');
-var exec = require('child_process').exec;
 var keypress = require('keypress');
 var Servo = require('./Servo.js');
 var servo = new Servo();

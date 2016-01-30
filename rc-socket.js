@@ -9,10 +9,8 @@ var express = require('express');
 var http = require( 'http' ); // HTTPモジュール読み込み
 var socketio = require( 'socket.io' ); // Socket.IOモジュール読み込み
 var fs = require( 'fs' ); // ファイル入出力モジュール読み込み
-var exec = require('child_process').exec;
 
-var key = require('./keyContorol.js');
-var Servo = require('./Servo.js');
+var Servo = require('./Servo');
 var servo = new Servo();
 
 
