@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>インターネットラジコン</title>
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="https://cdn.socket.io/socket.io-1.4.3.js"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/gyronorm.complete.min.js"></script>
+
+
+    </head>
+    <body>
+
+        <label>アクセル:</label><input id="axel" type="range" min="100" max="200" step="1" />
+        <label>ステアリング:</label><input id="steer" type="range" min="100" max="200" step="1" />
+        <input id="reset" type="button" value="reset"/>
+        <br>
+        <input id="gyroOn" type="button" value="ジャイロ操作オン" >
+        <br>
+        <h4>ステータス</h4>
+        <ul>
+            <li id="gyroStatus"></li> 
+            <li id="rotateStatus"></li>
+            <li id="axel-status"></li>
+            <li id="steer-status"></li>
+        </ul>
+        
+        <button id="back_button">BACKAREA</button>
+        <button id="axel_button">AXELAREA</button>
+
+
+        <script>
+            var gyro = {
+                status: false,
+                x: 0,
+                y: 0,
+                z: 0
+            };
+            $(function () {
+
+                var socket = io.connect("http://203.178.139.226:3000/");
+                socket.on('connect', function () {
+                    alert("接続されました。");
+
+                });
+                socket.on('disconnect', function () {
+                    alert("切断されました");
+
+                });
+                //アクセルの情報を送信
+                $("#axel").bind("change", function () {
+                    message = $(this).val();
+                    socket.emit("axel", message);
+
+
+                });
+                //ステアの情報を送信
+                $("#steer").bind("change", function () {
+                    message = $(this).val();
+                    socket.emit("steer", message);
+
+                });
+                //帰ってきたデータをステータスにレンダリング
+                socket.on("axel", function (data) {
+                    $('#axel-status').html("axel:" + data);
+                });
+                socket.on("steer", function (data) {
+                    $('#steer-status').html("steer:" + data);
+                });
+                //リセット
+                $("#reset").bind("click", reset);
+
+                //アクセルボタン
+                $("#axel_button").mousedown(
+                    function(){
+                        socket.emit("axel", 148);
+                    }
+                    )
+                //アクセルボタン
+                $("#back_button").mousedown(
+                    function(){
+                        socket.emit("axel", 159);
+                        socket.emit("axel", 160);
+
+                    }
+                    )
+
+                //バックボタン
+
+                //ジャイロモード切り替え
+                $("#gyroOn").on("click", function () {
+
+                    if (gyro.status === false) {
+                        gyro.status = true;
+                        alert("ジャイロモードになりました");
+                        $("#gyroOn").val("ジャイロ操作オフ");
+
+                        $("#gyroStatus").html("X:" + gyro.x + "Y:" + gyro.y + "Z:" + gyro.z);
+                    }
+                    else {
+                        gyro.status = false;
+                        alert("ジャイロモードやめました");
+                        $("#gyroOn").val("ジャイロ操作オン");
+                    }
+
+
+                });
+
+
+
+                function reset() {
+                    $("#steer").val(150);
+                    
+                    $("#axel").val(150);
+                    
+                }
+
+
+
+
+
+
+    
+            var gn = new GyroNorm();
+            var args = {
+                frequency: 50, // ( How often the object sends the values - milliseconds )
+                gravityNormalized: true, // ( If the garvity related values to be normalized )
+                orientationBase: GyroNorm.GAME, // ( Can be GyroNorm.GAME or GyroNorm.WORLD. gn.GAME returns orientation values with respect to the head direction of the device. gn.WORLD returns the orientation values with respect to the actual north direction of the world. )
+                decimalCount: 2, // ( How many digits after the decimal point will there be in the return values )
+                logger: null, // ( Function to be called to log messages from gyronorm.js )
+                screenAdjusted: false            // ( If set to true it will return screen adjusted values. )
+            };
+
+            gn.init(args).then(function () {
+                gn.start(function (data) {
+
+                    // Process:
+                    $("#gyroStatus").html("X:" + data.do.alpha + "Y:" + data.do.beta + "Z:" + data.do.gamma
+                    );
+                    $("#rotateStatus").html("X:" + data.dm.alpha + "Y:" + data.dm.beta + "Z:" + data.dm.gamma
+                    );
+                    var messageY = 　Math.round(data.do.beta + 150);
+                    //アクセルがくっそムズカシイので１回やめます
+                    /*var messageZ =   Math.round(-60 - data.do.gamma + 150);
+                    if(120 <messageZ && messageZ <180){
+                         socket.emit("axel", messageZ);
+                    }
+                    */
+                    if( 100 < messageY && messageY <200 ){
+                        socket.emit("steer", messageY);
+                    }
+                    
+                    //if( -30 > data.do.gamma && -90 < data.do.gamma ){
+                       
+                        
+                    //}
+
+
+                    
+                    // data.do.beta     ( deviceorientation event beta value )
+                    // data.do.gamma    ( deviceorientation event gamma value )
+                    // data.do.absolute ( deviceorientation event absolute value )
+
+                    // data.dm.x        ( devicemotion event acceleration x value )
+                    // data.dm.y        ( devicemotion event acceleration y value )
+                    // data.dm.z        ( devicemotion event acceleration z value )
+
+                    // data.dm.gx       ( devicemotion event accelerationIncludingGravity x value )
+                    // data.dm.gy       ( devicemotion event accelerationIncludingGravity y value )
+                    // data.dm.gz       ( devicemotion event accelerationIncludingGravity z value )
+
+                    // data.dm.alpha    ( devicemotion event rotationRate alpha value )
+                    // data.dm.beta     ( devicemotion event rotationRate beta value )
+                    // data.dm.gamma    ( devicemotion event rotationRate gamma value )
+                });
+            }).catch(function (e) {
+                // Catch if the DeviceOrientation or DeviceMotion is not supported by the browser or device
+
+            });
+
+            });
+        </script>
+    </body>
+
+
+</html>
