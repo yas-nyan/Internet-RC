@@ -17,7 +17,8 @@ var gyro = {
             z: 0
         };
         $(function () {
-            var socket = io.connect("http://" + host.name + ":" + host.port );
+            var address = "http://" + host.name + ":" + host.port;
+            var socket = io.connect(address);
             socket.on('connect', function () {
                 alert("接続されました。");
             });
