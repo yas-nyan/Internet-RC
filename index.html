@@ -156,7 +156,7 @@
            //アクセルボタン
             $("#axel_button").click(
                 function(){
-                    socket.emit("axel", 148);
+                    socket.emit("axel", 146);
 		    axelstatus = "forward";
                 }
                 )
@@ -170,6 +170,7 @@
                     socket.emit("axel", 159);
 		    socket.emit("axel", 159);
                     socket.emit("axel", 160);
+                    socket.emit("axel", 162);
 	            axelstatus = "back";
                 }
                 )
