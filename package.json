@@ -1,0 +1,24 @@
+{
+  "name": "Internet-RC",
+  "version": "0.1.0",
+  "description": "Play TAMIYA RC with nodeJS!",
+  "main": "rc-socket.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yas-nyan/Internet-RC.git"
+  },
+  "author": "yas-nyan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yas-nyan/Internet-RC/issues"
+  },
+  "homepage": "https://github.com/yas-nyan/Internet-RC",
+  "dependencies" :
+  { "express" : ""
+  , "socket.io" : ""
+  , "keypress" : ""
+  }
+}
