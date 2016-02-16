@@ -1,7 +1,5 @@
 /nbproject/private/
-
-#hostのファイル。
-js/host.js
+js/host.*
 DS_Store
 nbproject/
 
