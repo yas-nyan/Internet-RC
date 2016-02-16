@@ -9,15 +9,24 @@ var express = require('express');
 var http = require( 'http' ); // HTTPモジュール読み込み
 var socketio = require( 'socket.io' ); // Socket.IOモジュール読み込み
 var fs = require( 'fs' ); // ファイル入出力モジュール読み込み
+var ip = require( 'ip'); //IPアドレス取得用のモジュール
 
 var Servo = require('./Servo');
 var servo = new Servo();
 
+//サーバーの情報
+var host ={
+    name:ip.address(),
+    port:"3000"
+};
 
-// 3000番ポートでHTTPサーバーを立てる
+// HTTPサーバーを立てる
 var app = express();
 var server = http.createServer(app);
-server.listen(3000);
+server.listen(host.port);
+
+// host.jsonを作成・書き換えをする。
+fs.writeFile("js/host.json",JSON.stringify(host));
 
 //再帰的に必要なファイルを読みこませる。
 app.get('/', function (req, res) {
