@@ -21,6 +21,5 @@
   , "socket.io" : ""
   , "keypress" : ""
   , "ip" : ""
-  , "node-gamepad" : ""
   }
 }
