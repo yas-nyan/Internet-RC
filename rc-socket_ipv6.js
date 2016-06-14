@@ -1,8 +1,8 @@
 /*
  * 
  * １番中心になるjs。
- * 起動する際はnode rc-socket.jsでどうぞ。
- * 
+ * 起動する際はnode rc-socket_ipv6.jsでどうぞ。
+ * socket.ioのV対応はまだやってません。
  */
 
 var express = require('express');
@@ -16,14 +16,14 @@ var servo = new Servo();
 
 //サーバーの情報
 var host ={
-    name:ip.address(),
+    name:ip.address('public','ipv6'),
     port:"80"
 };
 
 // HTTPサーバーを立てる
 var app = express();
 var server = http.createServer(app);
-server.listen(host.port);
+server.listen(host.port,host.name);
 
 // host.jsonを作成・書き換えをする。
 fs.writeFile("js/host.json",JSON.stringify(host));
