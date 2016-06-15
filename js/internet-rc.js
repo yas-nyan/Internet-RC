@@ -88,6 +88,24 @@ $(function () {
         }
         axelstatus = "stop";
     }
+    //ライトボタン
+    $("#right_button").click(
+            function () {
+                socket.emit("axel", "right");
+                axelstatus = "forward";
+            }
+    );
+
+    //レフトボタン
+
+    $("#left_button").click(
+            function () {
+                socket.emit("axel", "left");
+                axelstatus = "forward";
+            }
+    );
+
+
     //ジャイロモード切り替え
     $("#gyroOn").on("click", function () {
         if (gyro.status === false) {

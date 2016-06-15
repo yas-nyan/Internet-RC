@@ -21,5 +21,6 @@
   , "socket.io" : ""
   , "keypress" : ""
   , "ip" : ""
+  , "pi-gpio" : ""
   }
 }
