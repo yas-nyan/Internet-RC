@@ -21,6 +21,12 @@ var host ={
     port:""
 };
 
+//標準のアクセル開度やトリムを設定します。
+var setting = {
+    steer:150,
+    axel:146
+}
+
 $(function () {
     //host.jsonからサーバーの情報を取得。
     $.getJSON("js/host.json",function(data){
@@ -60,7 +66,7 @@ $(function () {
     //アクセルボタン
     $("#axel_button").click(
             function () {
-                socket.emit("axel", 146);
+                socket.emit("axel", setting.axel);
                 axelstatus = "forward";
             }
     );
@@ -121,8 +127,18 @@ $(function () {
             $("#gyroOn").val("ジャイロ操作オン");
         }
     });
+
+    //詳細調整
+    $("#steer_init").on("click" , function () {
+        setting.steer = $("#steer_init").val();
+    });
+    $("#axel_init").on("click" , function () {
+        setting.axel = $("#axel_init").val();
+    });
+
+
     function reset() {
-        $("#steer").val(150);
+        $("#steer").val(setting.steer);
 
         $("#axel").val(150);
 
@@ -147,9 +163,9 @@ $(function () {
             }
             //$("#rotateStatus").html("X:" + data.dm.alpha + "Y:" + data.dm.beta + "Z:" + data.dm.gamma
             //);
-            var messageY = Math.round(data.do.beta + 150);
+            var messageY = Math.round(data.do.beta + setting.steer);
             //アクセルがくっそムズカシイので１回やめます
-            /*var messageZ =   Math.round(-60 - data.do.gamma + 150);
+            /*var messageZ =   Math.round(-60 - data.do.gamma + setting.steer);
              if(120 <messageZ && messageZ <180){
              socket.emit("axel", messageZ);
              }
