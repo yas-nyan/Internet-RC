@@ -1,9 +1,10 @@
 //ベンダーIDとプロダクトIDを直接指定するサンプル
 
+
 var GamePad = require('node-gamepad');
 var controller = new GamePad('ps3/dualshock3',{
-	vendorID:1356,
-	productID:616
+	vendorID:3853,
+	productID:77
 });
 
 //クライアントソケット

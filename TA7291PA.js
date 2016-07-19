@@ -2,7 +2,6 @@
  TOSHIBA TA7291PA's driver.
  
  http://github.com/yas-nyan/
- s14593yt Yasunobu Toyota
  ！！！コピペじゃないです！！！
  
  
